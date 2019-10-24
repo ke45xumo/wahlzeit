@@ -68,7 +68,7 @@ public class Photo extends DataObject {
 	public static final int MAX_THUMB_PHOTO_HEIGHT = 150;
 
 	protected PhotoId id = null;
-	
+	protected Location location;
 	/**
 	 *
 	 */
@@ -144,6 +144,13 @@ public class Photo extends DataObject {
 	 */
 	public Photo(PhotoId myId) {
 		id = myId;
+
+		incWriteCount();
+	}
+
+	public Photo(PhotoId myId, Location photoLocation){
+		id = myId;
+		location = photoLocation;
 
 		incWriteCount();
 	}
