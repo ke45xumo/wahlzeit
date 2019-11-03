@@ -57,4 +57,25 @@ public class EmailServiceTest {
 			Assert.fail("Silent mode does not allow exceptions");
 		}
 	}
+
+	@Test
+	public void testSendEmailBcc(){
+		EmailAddress from = validAddress;
+		EmailAddress to = validAddress;
+		EmailAddress bcc = validAddress;
+
+
+		String subject = "BCC TEST";
+		String body = "This is a test for sending an Email with Bcc";
+
+		try{
+			assertTrue(emailService.sendEmailIgnoreException(from,to,bcc,subject,body));
+			assertTrue(emailService.sendEmailIgnoreException(from,to,null,subject,body));
+
+			//assertTrue(emailService.sendEmailIgnoreException(from,to,EmailAddress.getFromString("asdf"),subject,body));
+
+		}catch(Exception ex){
+			Assert.fail("Silent mode does not allow exceptions");
+		}
+	}
 }

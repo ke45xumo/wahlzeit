@@ -59,9 +59,8 @@ dependencies {
 }
 
 test {
-    filter {
-        includeTestsMatching "org.wahlzeit.*"
-    }
+    include "AllTests.class"
+
     testLogging {
             events "passed", "skipped", "failed"
 

@@ -66,5 +66,27 @@ public class EmailAddressTest extends TestCase {
 		assertFalse(EmailAddress.EMPTY.isValid());
 	}
 
+	/**
+	 * Tests the function isEqual by comparing:
+	 * 		- same EmailAddress-Object with itself
+	 * 		- Different EmailAddress-Objects with same Email-Address
+	 * 		- EmailAddress-Object with null
+	 * 		- two EmailAddress-Objects with different Email-Addresses
+	 */
+	public void testIsEqual(){
+		EmailAddress mailBingoBongo1 = EmailAddress.getFromString("bingo@bongo.com");
+		EmailAddress mailBingoBongo2 = EmailAddress.getFromString("bingo@bongo.com");
+
+		EmailAddress mailBongoBingo = EmailAddress.getFromString("bongo@bingo.com");
+
+		assertTrue(mailBingoBongo1.isEqual(mailBingoBongo1));		// Test on same Object
+
+		assertTrue(mailBingoBongo1.isEqual(mailBingoBongo2));		// Test on different Object
+		assertTrue(mailBingoBongo2.isEqual(mailBingoBongo1));		// Test on different Object (different order)
+
+		assertFalse(mailBingoBongo1.isEqual(null));	// Test on Null
+		assertFalse(mailBingoBongo1.isEqual(mailBongoBingo));		// Test on other Email
+	}
+
 }
 
