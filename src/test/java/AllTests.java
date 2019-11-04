@@ -26,7 +26,6 @@ import org.wahlzeit.utils.*;
         ValueTest.class,
 
         // model.persistence
-        AbstractAdapterTest.class,
         DatastoreAdapterTest.class,
 
         // services
