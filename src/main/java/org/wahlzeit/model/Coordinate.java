@@ -1,8 +1,7 @@
-package org.wahlzeit.model;
 /*
  * Class:   Coordinate
  * Version: 1.0
- * Date:    2019-10-24
+ * Date:    2019-11-16
  *
  * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
  *
@@ -23,59 +22,20 @@ package org.wahlzeit.model;
  * <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Class representing a Coordinate of a specific Location
- */
-public class Coordinate {
-    private double x;
-    private double y;
-    private double z;
 
-    /**
-     * Constructor for Class Coordinate
-     *
-     * @param x:    X-Coordinate of some Location
-     * @param y:    Y-Coordinate of some Location
-     * @param z:    Z-Coordinate of some Location
-     */
-    public Coordinate(double x, double y, double z){
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
+package org.wahlzeit.model;
 
-    /**
-     * Calculates the Cartesian distance between the Points provided by Coordinate coordinate.
-     *
-     * @param coordinate:   Coordinate (3-dimensional) to Calculate the cartesian Distance
-     * @return              direct Cartesian Distance of Parameter coordinate
-     */
-    public double getDistance(Coordinate coordinate){
+public interface Coordinate {
 
-        // Calculate the Difference and square it
-        double squaredDiff_X = Math.pow(this.x - coordinate.x, 2);
-        double squaredDiff_Y = Math.pow(this.y - coordinate.y, 2);
-        double squaredDiff_Z = Math.pow(this.z - coordinate.z, 2);
+    public CartesianCoordinate asCartesianCoordinate();
 
-        //Calculate and return the Distance
-        return Math.sqrt(squaredDiff_X + squaredDiff_Y + squaredDiff_Z);
-    }
+    public double getCartesianDistance(Coordinate coordinate);
 
-    /**
-     * Test whether the provided Coordinate coordinate is equal to this Coordinate,
-     * by checking if its x-, y-, z-Coordinates are equal.
-     *
-     * @param coordinate:   Coordinate (3-dimensional) to compare this Coordinate with
-     * @return             True:   if coordinate is equal to this Coordinate
-     *                      False:  else
-     */
-    public boolean isEqual(Coordinate coordinate){
+    public SphericCoordinate asSphericCoordinate();
 
-        // Test for specific Coordinates
-        boolean bEqual_x = (this.x == coordinate.x);
-        boolean bEqual_y = (this.y == coordinate.y);
-        boolean bEqual_z = (this.z == coordinate.z);
+    public double getCentralAngle(Coordinate coordinate);
 
-        return bEqual_x && bEqual_y && bEqual_z;
-    }
+    public boolean isEqual(Coordinate coordinate);
+
+
 }

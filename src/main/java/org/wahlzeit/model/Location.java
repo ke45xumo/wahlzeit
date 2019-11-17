@@ -32,7 +32,7 @@ public class Location {
      * Constructor for Initialization of an Location object
      * @param coordinate: Coordinate according to the Location
      */
-    public Location(Coordinate coordinate){
+    public Location(CartesianCoordinate coordinate){
         this.coordinate = coordinate;
     }
 
