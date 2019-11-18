@@ -30,17 +30,19 @@ public class SphericCoordinate implements Coordinate {
     private double radius;
 
     public SphericCoordinate(double phi, double theta, double radius) throws Exception{
+
         if (radius < 0){
             throw new Exception("Radius cannot be less then 0");
         }
 
-        if (theta < 0 || theta >180){
+        if (theta < 0 || theta > 180){
             throw new Exception("Theta must be 0 <= theta <= 180");
         }
 
         if (phi < 0 || phi >= 360){
             throw new Exception("Phi must be 0 <= phi <360");
         }
+
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
@@ -144,11 +146,11 @@ public class SphericCoordinate implements Coordinate {
         /*========================================================================================
          * Get Longitude and Latitudes of the Coordinates
          *========================================================================================*/
-        double lon1 = getTheta() - 90; // Longitude of this Coordinate
-        double lat1 = getPhi();        // Latitude of this Coordinate
+        double lon1 = getTheta();       // Longitude of this Coordinate
+        double lat1 = 90 - getPhi();    // Latitude of this Coordinate
 
-        double lon2 = sphericCoordinate.getTheta() - 90; // longitude of second Coordinate (argument)
-        double lat2 = sphericCoordinate.getPhi();        // latitude of seconde Coordinate (argument)
+        double lon2 = sphericCoordinate.getTheta();     // longitude of second Coordinate (argument)
+        double lat2 = 90 - sphericCoordinate.getPhi();  // latitude of seconde Coordinate (argument)
 
         double deltaLambda = Math.abs(lon2 - lon1);     // delta of Longitudes
         /*==========================================================================================
@@ -158,8 +160,8 @@ public class SphericCoordinate implements Coordinate {
 
         // Second summand of the numberator
         double numSecSummand =  Math.pow(
-                Math.cos(lat1) * Math.sin(lat2) -
-                        Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLambda)
+                    Math.cos(lat1) * Math.sin(lat2) -
+                    Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLambda)
                 ,2);
 
         double numerator = Math.sqrt(numFirstSummand + numSecSummand);
@@ -172,7 +174,7 @@ public class SphericCoordinate implements Coordinate {
          *===========================================================================================*/
         double centralAngle = Math.atan(numerator/denumerator);
 
-        return centralAngle;
+        return Math.abs(centralAngle);
     }
 
     @Override
