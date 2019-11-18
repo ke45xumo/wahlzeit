@@ -31,9 +31,9 @@ public interface Coordinate {
 
     public double getCartesianDistance(Coordinate coordinate);
 
-    public SphericCoordinate asSphericCoordinate();
+    public SphericCoordinate asSphericCoordinate() throws Exception;
 
-    public double getCentralAngle(Coordinate coordinate);
+    public double getCentralAngle(Coordinate coordinate) throws Exception;
 
     public boolean isEqual(Coordinate coordinate);
 

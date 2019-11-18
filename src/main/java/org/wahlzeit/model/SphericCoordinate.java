@@ -29,7 +29,18 @@ public class SphericCoordinate implements Coordinate {
     private double theta;
     private double radius;
 
-    public SphericCoordinate(double phi, double theta, double radius){
+    public SphericCoordinate(double phi, double theta, double radius) throws Exception{
+        if (radius < 0){
+            throw new Exception("Radius cannot be less then 0");
+        }
+
+        if (theta < 0 || theta >180){
+            throw new Exception("Theta must be 0 <= theta <= 180");
+        }
+
+        if (phi < 0 || phi >= 360){
+            throw new Exception("Phi must be 0 <= phi <360");
+        }
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
@@ -128,7 +139,7 @@ public class SphericCoordinate implements Coordinate {
      * @return central Angle between this coordinate and the coordinate provided by Argument
      */
     @Override
-    public double getCentralAngle(Coordinate coordinate) {
+    public double getCentralAngle(Coordinate coordinate) throws Exception {
         SphericCoordinate sphericCoordinate = coordinate.asSphericCoordinate();   // Coordinate (argument) as Spheric Coordinate
         /*========================================================================================
          * Get Longitude and Latitudes of the Coordinates

@@ -122,7 +122,7 @@ public class CartesianCoordinate implements Coordinate{
      * @return this {@link CartesianCoordinate} as a {@link SphericCoordinate}
      */
     @Override
-    public SphericCoordinate asSphericCoordinate() {
+    public SphericCoordinate asSphericCoordinate() throws Exception {
         double radius = Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2));
         double phi = Math.atan(y/x);
         double theta =  Math.acos(z/radius);
@@ -140,7 +140,7 @@ public class CartesianCoordinate implements Coordinate{
      * @return central Angle between this coordinate and the coordinate provided by Argument
      */
     @Override
-    public double getCentralAngle(Coordinate coordinate) {
+    public double getCentralAngle(Coordinate coordinate) throws Exception {
         SphericCoordinate sphericCoordinate = this.asSphericCoordinate();   // This Coordinate as Spheric Coordinate
         double centralAngle = sphericCoordinate.getCartesianDistance(coordinate);
 
