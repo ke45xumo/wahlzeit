@@ -26,7 +26,7 @@ package org.wahlzeit.model;
 /**
  * Class representing a Coordinate of a specific Location
  */
-public class CartesianCoordinate implements Coordinate{
+public class CartesianCoordinate extends AbstractCoordinate{
     private double x;
     private double y;
     private double z;
@@ -98,24 +98,6 @@ public class CartesianCoordinate implements Coordinate{
         return this;
     }
 
-    /**
-     * Calculates the Cartesian distance between the Points provided by Coordinate coordinate.
-     *
-     * @param coordinate:   Coordinate (3-dimensional) to Calculate the cartesian Distance
-     * @return              direct Cartesian Distance of Parameter coordinate
-     */
-    @Override
-    public double getCartesianDistance(Coordinate coordinate) {
-        CartesianCoordinate cartesianCoordinate = coordinate.asCartesianCoordinate();
-
-        // Calculate the Difference and square it
-        double squaredDiff_X = Math.pow(this.x - cartesianCoordinate.x, 2);
-        double squaredDiff_Y = Math.pow(this.y - cartesianCoordinate.y, 2);
-        double squaredDiff_Z = Math.pow(this.z - cartesianCoordinate.z, 2);
-
-        //Calculate and return the Distance
-        return Math.sqrt(squaredDiff_X + squaredDiff_Y + squaredDiff_Z);
-    }
 
     /**
      * Converts this {@link CartesianCoordinate} to a Spheric Coordinate
@@ -130,40 +112,5 @@ public class CartesianCoordinate implements Coordinate{
         SphericCoordinate sphericCoordinate =  new SphericCoordinate(phi, theta, radius);
 
         return sphericCoordinate;
-    }
-
-    /**
-     * This function calculates the CentralAngle between two Coordinates.
-     * This is done by getting the Spheric Coordinates of this and the provided Coordinate
-     *
-     * @param coordinate Coordinate to get central angle between this coordinate.
-     * @return central Angle between this coordinate and the coordinate provided by Argument
-     */
-    @Override
-    public double getCentralAngle(Coordinate coordinate) throws Exception {
-        SphericCoordinate sphericCoordinate = this.asSphericCoordinate();   // This Coordinate as Spheric Coordinate
-        double centralAngle = sphericCoordinate.getCartesianDistance(coordinate);
-
-        return centralAngle;
-    }
-
-    /**
-     * Test whether the provided Coordinate coordinate is equal to this Coordinate,
-     * by checking if its x-, y-, z-Coordinates are equal.
-     *
-     * @param coordinate:   Coordinate (3-dimensional) to compare this Coordinate with
-     * @return             True:   if coordinate is equal to this Coordinate
-     *                      False:  else
-     */
-    @Override
-    public boolean isEqual(Coordinate coordinate) {
-        CartesianCoordinate cartesianCoordinate = coordinate.asCartesianCoordinate();
-
-        // Test for specific Coordinates
-        boolean bEqual_x = (this.x == cartesianCoordinate.x);
-        boolean bEqual_y = (this.y == cartesianCoordinate.y);
-        boolean bEqual_z = (this.z == cartesianCoordinate.z);
-
-        return bEqual_x && bEqual_y && bEqual_z;
     }
 }

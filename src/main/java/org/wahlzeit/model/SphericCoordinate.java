@@ -23,7 +23,7 @@
  */
 package org.wahlzeit.model;
 
-public class SphericCoordinate implements Coordinate {
+public class SphericCoordinate extends AbstractCoordinate {
     // Members
     private double phi;
     private double theta;
@@ -109,20 +109,6 @@ public class SphericCoordinate implements Coordinate {
         return cartesianCoordinate;
     }
 
-    /**
-     * Gets the Cartesian Distance between this and the Coordinate provided by Argument
-     *
-     * @param coordinate Coordinate to calculate the distance to
-     * @return Cartesian Distance between the Coordinates
-     */
-    @Override
-    public double getCartesianDistance(Coordinate coordinate) {
-        CartesianCoordinate cartesianCoordinate = this.asCartesianCoordinate();             // This object as Cartesian Coordinate
-        CartesianCoordinate cartesianCoordinateArgument = coordinate.asCartesianCoordinate(); // Argument as Cartesian Coordinate
-
-        return cartesianCoordinate.getCartesianDistance(cartesianCoordinateArgument);
-    }
-
     /**s
      * Returns this Spheric Coordinate as Cartesian Coordinate
      * @return this Spheric Coordinate as Cartesian Coordinate
@@ -132,55 +118,4 @@ public class SphericCoordinate implements Coordinate {
         return this;
     }
 
-    /**
-     * This function calculates the CentralAngle between two Coordinates.
-     * This is done by getting the Spheric Coordinates of this and the provided Coordinate
-     * and calculating the Great-Circle-Distance between them.
-     *
-     * @param coordinate Coordinate to get central angle between this coordinate.
-     * @return central Angle between this coordinate and the coordinate provided by Argument
-     */
-    @Override
-    public double getCentralAngle(Coordinate coordinate) throws Exception {
-        SphericCoordinate sphericCoordinate = coordinate.asSphericCoordinate();   // Coordinate (argument) as Spheric Coordinate
-        /*========================================================================================
-         * Get Longitude and Latitudes of the Coordinates
-         *========================================================================================*/
-        double lon1 = getTheta();       // Longitude of this Coordinate
-        double lat1 = 90 - getPhi();    // Latitude of this Coordinate
-
-        double lon2 = sphericCoordinate.getTheta();     // longitude of second Coordinate (argument)
-        double lat2 = 90 - sphericCoordinate.getPhi();  // latitude of seconde Coordinate (argument)
-
-        double deltaLambda = Math.abs(lon2 - lon1);     // delta of Longitudes
-        /*==========================================================================================
-         * Calculate the Numberator of the Calculation
-         *===========================================================================================*/
-        double numFirstSummand = Math.pow(Math.cos(lat2 * Math.sin(deltaLambda)), 2);   // First summand of the numberator
-
-        // Second summand of the numberator
-        double numSecSummand =  Math.pow(
-                    Math.cos(lat1) * Math.sin(lat2) -
-                    Math.sin(lat1) * Math.cos(lat2) * Math.cos(deltaLambda)
-                ,2);
-
-        double numerator = Math.sqrt(numFirstSummand + numSecSummand);
-        /*==========================================================================================
-         * Calculate the Denumberator of the Calculation
-         *==========================================================================================*/
-        double denumerator = Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.sin(lat2) * Math.cos(deltaLambda);
-        /*===========================================================================================
-         * Calculate the Angle
-         *===========================================================================================*/
-        double centralAngle = Math.atan(numerator/denumerator);
-
-        return Math.abs(centralAngle);
-    }
-
-    @Override
-    public boolean isEqual(Coordinate coordinate) {
-        CartesianCoordinate cartesianCoordinate = asCartesianCoordinate();
-
-        return cartesianCoordinate.isEqual(coordinate);
-    }
 }
