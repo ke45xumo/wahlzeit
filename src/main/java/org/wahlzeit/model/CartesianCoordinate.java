@@ -39,9 +39,11 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * @param z:    Z-Coordinate of some Location
      */
     public CartesianCoordinate(double x, double y, double z){
+        assertClassInvariants();
         this.x = x;
         this.y = y;
         this.z = z;
+        assertClassInvariants();
     }
 
     /**
@@ -49,6 +51,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * @return x-coordinate of this Coordinate
      */
     public double getX(){
+        assertClassInvariants();
         return x;
     }
     /**
@@ -56,6 +59,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * @return z-coordinate of this Coordinate
      */
     public double getZ(){
+        assertClassInvariants();
         return z;
     }
 
@@ -64,6 +68,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * @return y-coordinate of this Coordinate
      */
     public double getY(){
+        assertClassInvariants();
         return y;
     }
 
@@ -72,21 +77,27 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * @param x Member Variable x
      */
     public void setX(double x) {
+        assertClassInvariants();
         this.x = x;
+        assertClassInvariants();
     }
     /**
      * Sets the class Variable y
      * @param y Member Variable y
      */
     public void setY(double y) {
+        assertClassInvariants();
         this.y = y;
+        assertClassInvariants();
     }
     /**
      * Sets the class Variable z
      * @param z Member Variable z
      */
     public void setZ(double z) {
+        assertClassInvariants();
         this.z = z;
+        assertClassInvariants();
     }
 
     /**
@@ -95,6 +106,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      */
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
+        assertClassInvariants();
         return this;
     }
 
@@ -105,12 +117,45 @@ public class CartesianCoordinate extends AbstractCoordinate{
      */
     @Override
     public SphericCoordinate asSphericCoordinate() throws Exception {
+        // Class Invariant
+        assertClassInvariants();
+
         double radius = Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2));
         double phi = Math.atan(y/x);
         double theta =  Math.acos(z/radius);
 
         SphericCoordinate sphericCoordinate =  new SphericCoordinate(phi, theta, radius);
 
+        /* No need to check Invariants/ Post Conditions ==> Invariants covered by Constructor */
+        assertClassInvariants();
         return sphericCoordinate;
+    }
+
+    /**
+     * ClassInvariant for checking
+     * if the variables:
+     *    - x
+     *    - y
+     *    - z
+     * are:
+     *     - a Number
+     *     - Finite
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void assertClassInvariants() {
+        /*====================================
+         *  check if a Number and Finite
+         *===================================*/
+        assert (!Double.isNaN(x)) : "X must be a Number";
+        assert (Double.isFinite(x)) : "X must be finite";
+
+        assert (!Double.isNaN(y)) : "Y must be a Number";
+        assert (Double.isFinite(y)): "Y must be finite";
+
+        assert (!Double.isNaN(z)) : "Z must be a Number";
+        assert (Double.isFinite(z)): "Z must be finite";
+
     }
 }

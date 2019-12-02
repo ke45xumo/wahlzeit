@@ -29,23 +29,12 @@ public class SphericCoordinate extends AbstractCoordinate {
     private double theta;
     private double radius;
 
-    public SphericCoordinate(double phi, double theta, double radius) throws Exception{
-
-        if (radius < 0){
-            throw new Exception("Radius cannot be less then 0");
-        }
-
-        if (theta < 0 || theta > 180){
-            throw new Exception("Theta must be 0 <= theta <= 180");
-        }
-
-        if (phi < 0 || phi >= 360){
-            throw new Exception("Phi must be 0 <= phi <360");
-        }
-
+    public SphericCoordinate(double phi, double theta, double radius){
+        assertClassInvariants();
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
+        assertClassInvariants();
     }
 
     /**
@@ -53,6 +42,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @return Class Member phi
      */
     public double getPhi() {
+        assertClassInvariants();
         return phi;
     }
     /**
@@ -60,6 +50,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @return Class Member radius
      */
     public double getRadius() {
+        assertClassInvariants();
         return radius;
     }
     /**
@@ -67,6 +58,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @return Class Member theta
      */
     public double getTheta() {
+        assertClassInvariants();
         return theta;
     }
     /**
@@ -75,7 +67,9 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @return
      */
     public void setPhi(double phi) {
+        assertClassInvariants();
         this.phi = phi;
+        assertClassInvariants();
     }
     /**
      * Sets Class Member radius
@@ -83,7 +77,9 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @return
      */
     public void setRadius(double radius) {
+        assertClassInvariants();
         this.radius = radius;
+        assertClassInvariants();
     }
     /**
      * Sets Class Member theta
@@ -91,7 +87,9 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @return
      */
     public void setTheta(double theta) {
+        assertClassInvariants();
         this.theta = theta;
+        assertClassInvariants();
     }
 
     /**
@@ -100,12 +98,18 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
+        /* No need to check Pre and Post Conditions
+            ==> Those are already checked by Contructors of this and
+                and the new Coordinate
+         */
+
+        assertClassInvariants();
         double x = radius * Math.sin(theta) * Math.cos(phi);
         double y = radius * Math.sin(theta) * Math.sin(phi);
         double z = radius * Math.cos(theta);
 
         CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(x,y,z);
-
+        assertClassInvariants();
         return cartesianCoordinate;
     }
 
@@ -115,7 +119,47 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public SphericCoordinate asSphericCoordinate() {
+        assertClassInvariants();
         return this;
     }
 
+
+    /**
+     * ClassInvariant for checking if the variables
+     *      - radius
+     *      - theta
+     *      - phi
+     * are in expected boundries.
+     *
+     * In addition checking if variables are:
+     *     - a Number
+     *     - are Finite
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void assertClassInvariants()  {
+        /*====================================
+         *  check if a Number and Finite
+         *===================================*/
+        assert(!Double.isNaN(radius)): "Radius must be a Number";
+        assert(Double.isFinite(radius)): "Radius must be finite";
+
+        assert(!Double.isNaN(theta)): "Theta must be a Number";
+        assert(Double.isFinite(theta)): "Theta must be finite";
+
+        assert(!Double.isNaN(phi)): "Phi must be a Number";
+        assert(Double.isFinite(phi)): "Phi must be finite";
+
+        /*====================================
+         * check expected boundries
+         *====================================*/
+        assert(radius >= 0): "Radius: " + radius + ".Radius must be greater than 0";
+
+        assert(theta >= 0): "Theta: " + theta + ".Theta must be greater than 0";
+        assert(theta <= 180): "Theta: " + theta + ".Theta must be less than 180";
+
+        assert(phi >= 0): "Phi: " + phi + ".Phi must be greater than 0";
+        assert(phi < 360): "Phi: " + phi + ".Phi must be less than 360";
+    }
 }

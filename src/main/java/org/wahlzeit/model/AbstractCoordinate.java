@@ -16,6 +16,26 @@ public abstract class AbstractCoordinate implements Coordinate {
      */
     @Override
     public double getCartesianDistance(Coordinate coordinate) {
+        // Precondition
+        assert(coordinate != null);
+        assert(coordinate instanceof CartesianCoordinate || coordinate instanceof SphericCoordinate);
+
+        Double distance = doGetCartesianDistance(coordinate);
+
+        //PostCondition
+        assert(Double.isFinite(distance));
+        assert(!Double.isNaN(distance));
+        assert(distance >= 0);
+
+        return  distance;
+    }
+
+    /**
+     * Gets the Cartesian Distance between this and the Coordinate provided by Argument
+     * @param coordinate Coordinate to calculate the distance to
+     * @return Cartesian Distance between the Coordinates
+     */
+    protected double doGetCartesianDistance(Coordinate coordinate){
         CartesianCoordinate cartesianCoordinate = this.asCartesianCoordinate();             // This object as Cartesian Coordinate
         CartesianCoordinate cartesianCoordinateArgument = coordinate.asCartesianCoordinate(); // Argument as Cartesian Coordinate
 
@@ -37,6 +57,29 @@ public abstract class AbstractCoordinate implements Coordinate {
      */
     @Override
     public double getCentralAngle(Coordinate coordinate) throws Exception {
+        // Precondition
+        assert(coordinate != null) : "Coordinate is null";
+        assert(coordinate instanceof CartesianCoordinate || coordinate instanceof SphericCoordinate):
+                "Coordinate is not instance of CartesianCoordinate nor of SphericCoordinate";
+
+        Double angle = doGetCentralAngle(coordinate);
+
+        //PostCondition
+        assert(Double.isFinite(angle)):"CentralAngle is not Finite";
+        assert(!Double.isNaN(angle)):"CentralAngle is not a Number";
+        assert(angle >= 0):"CentralAngle is less than 0";
+
+        return  angle;
+    }
+
+    /**
+     * This function calculates the CentralAngle between two Coordinates.
+     * This is done by getting the Spheric Coordinates of this and the provided Coordinate
+     *
+     * @param coordinate Coordinate to get central angle between this coordinate.
+     * @return central Angle between this coordinate and the coordinate provided by Argument
+     */
+    protected double doGetCentralAngle(Coordinate coordinate) throws Exception {
         SphericCoordinate sphericCoordinate = coordinate.asSphericCoordinate();   // Coordinate (argument) as Spheric Coordinate
         SphericCoordinate thisSphericCoordinate = this.asSphericCoordinate();     // This as Spheric Coordinate
         /*========================================================================================
@@ -83,6 +126,29 @@ public abstract class AbstractCoordinate implements Coordinate {
      */
     @Override
     public boolean isEqual(Coordinate coordinate) {
+        // Precondition
+        assert(coordinate != null) : "Coordinate is null";
+        assert(coordinate instanceof CartesianCoordinate || coordinate instanceof SphericCoordinate):
+                "Coordinate is not instance of CartesianCoordinate nor of SphericCoordinate";
+
+        boolean isEqual = doIsEqual(coordinate);
+
+        //PostCondition
+        assert(isEqual == true || isEqual == false): "isEqual is not true nor false";
+
+        return  isEqual;
+    }
+
+    /**
+     * Test whether the provided Coordinate coordinate is equal to this Coordinate,
+     * by checking if its x-, y-, z-Coordinates are equal.
+     *
+     * @param coordinate:   Coordinate (3-dimensional) to compare this Coordinate with
+     * @return             True:   if coordinate is equal to this Coordinate
+     *                      False:  else
+     */
+
+    protected boolean doIsEqual(Coordinate coordinate) {
         CartesianCoordinate cartesianCoordinate = coordinate.asCartesianCoordinate();
         CartesianCoordinate thisCartasianCoordinate = this.asCartesianCoordinate();
 
@@ -93,4 +159,9 @@ public abstract class AbstractCoordinate implements Coordinate {
 
         return bEqual_x && bEqual_y && bEqual_z;
     }
+
+    /**
+     * Check class invariants Abstract Coordinate and its subclasses
+     */
+    protected abstract void assertClassInvariants();
 }
