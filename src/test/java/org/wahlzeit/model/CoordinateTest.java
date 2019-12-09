@@ -33,13 +33,13 @@ public class CoordinateTest {
     }
     @Test
     public void testSphericCoordinate()  {
-        assertThrows(AssertionError.class, () -> new SphericCoordinate(falsePhi1,correctTheta,correctRadius));
-        assertThrows(AssertionError.class, () -> new SphericCoordinate(falsePhi2,correctTheta,correctRadius));
+        assertThrows(IllegalArgumentException.class, () -> new SphericCoordinate(falsePhi1,correctTheta,correctRadius));
+        assertThrows(IllegalArgumentException.class, () -> new SphericCoordinate(falsePhi2,correctTheta,correctRadius));
 
-        assertThrows(AssertionError.class, () -> new SphericCoordinate(correctPhi,falseTheta1,correctRadius));
-        assertThrows(AssertionError.class, () -> new SphericCoordinate(correctPhi,falseTheta2,correctRadius));
+        assertThrows(IllegalArgumentException.class, () -> new SphericCoordinate(correctPhi,falseTheta1,correctRadius));
+        assertThrows(IllegalArgumentException.class, () -> new SphericCoordinate(correctPhi,falseTheta2,correctRadius));
 
-        assertThrows(AssertionError.class, () -> new SphericCoordinate(correctPhi,correctTheta,falseRadius));
+        assertThrows(IllegalArgumentException.class, () -> new SphericCoordinate(correctPhi,correctTheta,falseRadius));
 
         try {
             assertNotNull(new SphericCoordinate(correctPhi, correctTheta, correctRadius));

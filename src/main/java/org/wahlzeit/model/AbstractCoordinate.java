@@ -1,11 +1,17 @@
 package org.wahlzeit.model;
 
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public abstract class AbstractCoordinate implements Coordinate {
+    protected static final Logger log = Logger.getLogger(AbstractCoordinate.class.getName());
+
     @Override
     public abstract CartesianCoordinate asCartesianCoordinate();
 
     @Override
-    public  abstract SphericCoordinate asSphericCoordinate() throws Exception;
+    public  abstract SphericCoordinate asSphericCoordinate();
 
 
     /**
@@ -15,17 +21,29 @@ public abstract class AbstractCoordinate implements Coordinate {
      * @return Cartesian Distance between the Coordinates
      */
     @Override
-    public double getCartesianDistance(Coordinate coordinate) {
+    public double getCartesianDistance(Coordinate coordinate)  throws IllegalArgumentException, IllegalStateException{
         // Precondition
-        assert(coordinate != null);
-        assert(coordinate instanceof CartesianCoordinate || coordinate instanceof SphericCoordinate);
+        try {
+            assert (coordinate != null);
+            assert (coordinate instanceof CartesianCoordinate || coordinate instanceof SphericCoordinate);
+        }catch (AssertionError e){
+            final String msg = "Coordinate must be either a CartesianCoordinate or an SphericCorrdinate";
+            log.log(Level.SEVERE, msg);
+            throw new IllegalArgumentException(msg);
+        }
 
         Double distance = doGetCartesianDistance(coordinate);
 
         //PostCondition
-        assert(Double.isFinite(distance));
-        assert(!Double.isNaN(distance));
-        assert(distance >= 0);
+        try {
+            assert (Double.isFinite(distance)): "Distance may not be infinite.";
+            assert (!Double.isNaN(distance)): "Distance is not a number";
+            assert (distance >= 0): "Distance must be greater 0";
+        }catch(AssertionError e){
+            final String msg = "Invalid Distance:" + e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalStateException(msg);
+        }
 
         return  distance;
     }
@@ -36,6 +54,7 @@ public abstract class AbstractCoordinate implements Coordinate {
      * @return Cartesian Distance between the Coordinates
      */
     protected double doGetCartesianDistance(Coordinate coordinate){
+
         CartesianCoordinate cartesianCoordinate = this.asCartesianCoordinate();             // This object as Cartesian Coordinate
         CartesianCoordinate cartesianCoordinateArgument = coordinate.asCartesianCoordinate(); // Argument as Cartesian Coordinate
 
@@ -56,19 +75,30 @@ public abstract class AbstractCoordinate implements Coordinate {
      * @return central Angle between this coordinate and the coordinate provided by Argument
      */
     @Override
-    public double getCentralAngle(Coordinate coordinate) throws Exception {
+    public double getCentralAngle(Coordinate coordinate) throws IllegalArgumentException, IllegalStateException      {
         // Precondition
-        assert(coordinate != null) : "Coordinate is null";
-        assert(coordinate instanceof CartesianCoordinate || coordinate instanceof SphericCoordinate):
-                "Coordinate is not instance of CartesianCoordinate nor of SphericCoordinate";
+        try {
+            assert (coordinate != null) : "Coordinate is null";
+            assert (coordinate instanceof CartesianCoordinate || coordinate instanceof SphericCoordinate) :
+                    "Coordinate is not instance of CartesianCoordinate nor of SphericCoordinate";
+        }catch (AssertionError e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
 
         Double angle = doGetCentralAngle(coordinate);
 
         //PostCondition
-        assert(Double.isFinite(angle)):"CentralAngle is not Finite";
-        assert(!Double.isNaN(angle)):"CentralAngle is not a Number";
-        assert(angle >= 0):"CentralAngle is less than 0";
-
+        try {
+            assert (Double.isFinite(angle)) : "CentralAngle is not Finite";
+            assert (!Double.isNaN(angle)) : "CentralAngle is not a Number";
+            assert (angle >= 0) : "CentralAngle is less than 0";
+        }catch(AssertionError e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalStateException(msg);
+        }
         return  angle;
     }
 
@@ -79,7 +109,7 @@ public abstract class AbstractCoordinate implements Coordinate {
      * @param coordinate Coordinate to get central angle between this coordinate.
      * @return central Angle between this coordinate and the coordinate provided by Argument
      */
-    protected double doGetCentralAngle(Coordinate coordinate) throws Exception {
+    protected double doGetCentralAngle(Coordinate coordinate)  throws IllegalStateException,IllegalArgumentException {
         SphericCoordinate sphericCoordinate = coordinate.asSphericCoordinate();   // Coordinate (argument) as Spheric Coordinate
         SphericCoordinate thisSphericCoordinate = this.asSphericCoordinate();     // This as Spheric Coordinate
         /*========================================================================================
@@ -127,15 +157,25 @@ public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public boolean isEqual(Coordinate coordinate) {
         // Precondition
-        assert(coordinate != null) : "Coordinate is null";
-        assert(coordinate instanceof CartesianCoordinate || coordinate instanceof SphericCoordinate):
-                "Coordinate is not instance of CartesianCoordinate nor of SphericCoordinate";
-
+        try {
+            assert (coordinate != null) : "Coordinate is null";
+            assert (coordinate instanceof CartesianCoordinate || coordinate instanceof SphericCoordinate) :
+                    "Coordinate is not instance of CartesianCoordinate nor of SphericCoordinate";
+        }catch (AssertionError e){
+            final String msg = "Illegal Argument: "+e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
         boolean isEqual = doIsEqual(coordinate);
 
         //PostCondition
-        assert(isEqual == true || isEqual == false): "isEqual is not true nor false";
-
+        try {
+            assert (isEqual == true || isEqual == false) : "isEqual is not true nor false";
+        }catch (AssertionError e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalStateException(msg);
+        }
         return  isEqual;
     }
 

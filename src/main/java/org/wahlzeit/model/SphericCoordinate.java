@@ -23,25 +23,37 @@
  */
 package org.wahlzeit.model;
 
+import com.google.apphosting.api.ApiProxy;
+
+import java.util.logging.Level;
+
 public class SphericCoordinate extends AbstractCoordinate {
     // Members
     private double phi;
     private double theta;
     private double radius;
 
-    public SphericCoordinate(double phi, double theta, double radius){
+    public SphericCoordinate(double phi, double theta, double radius) throws IllegalStateException, IllegalArgumentException {
         assertClassInvariants();
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
-        assertClassInvariants();
+
+        // False Arguments
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
     }
 
     /**
      * Gets Class Member phi
      * @return Class Member phi
      */
-    public double getPhi() {
+    public double getPhi() throws IllegalStateException{
         assertClassInvariants();
         return phi;
     }
@@ -49,7 +61,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * Gets Class Member radius
      * @return Class Member radius
      */
-    public double getRadius() {
+    public double getRadius() throws IllegalStateException{
         assertClassInvariants();
         return radius;
     }
@@ -57,7 +69,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * Gets Class Member theta
      * @return Class Member theta
      */
-    public double getTheta() {
+    public double getTheta() throws IllegalStateException{
         assertClassInvariants();
         return theta;
     }
@@ -66,30 +78,50 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @param phi Class Member phi
      * @return
      */
-    public void setPhi(double phi) {
+    public void setPhi(double phi) throws IllegalStateException, IllegalArgumentException{
         assertClassInvariants();
         this.phi = phi;
-        assertClassInvariants();
+
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
     }
     /**
      * Sets Class Member radius
      * @param radius Class Member radius
      * @return
      */
-    public void setRadius(double radius) {
+    public void setRadius(double radius) throws IllegalStateException{
         assertClassInvariants();
         this.radius = radius;
-        assertClassInvariants();
+
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
     }
     /**
      * Sets Class Member theta
      * @param theta:    Class Member theta
      * @return
      */
-    public void setTheta(double theta) {
+    public void setTheta(double theta) throws IllegalStateException{
         assertClassInvariants();
         this.theta = theta;
-        assertClassInvariants();
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
     }
 
     /**
@@ -97,7 +129,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @return this SphericCoordinate as Cartesian Coordinate
      */
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
+    public CartesianCoordinate asCartesianCoordinate() throws IllegalStateException{
         /* No need to check Pre and Post Conditions
             ==> Those are already checked by Contructors of this and
                 and the new Coordinate
@@ -118,7 +150,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @return this Spheric Coordinate as Cartesian Coordinate
      */
     @Override
-    public SphericCoordinate asSphericCoordinate() {
+    public SphericCoordinate asSphericCoordinate() throws IllegalStateException{
         assertClassInvariants();
         return this;
     }
@@ -138,28 +170,34 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @throws Exception
      */
     @Override
-    protected void assertClassInvariants()  {
-        /*====================================
-         *  check if a Number and Finite
-         *===================================*/
-        assert(!Double.isNaN(radius)): "Radius must be a Number";
-        assert(Double.isFinite(radius)): "Radius must be finite";
+    protected void assertClassInvariants()  throws IllegalStateException{
+        try {
+            /*====================================
+             *  check if a Number and Finite
+             *===================================*/
+            assert (!Double.isNaN(radius)) : "Radius must be a Number";
+            assert (Double.isFinite(radius)) : "Radius must be finite";
 
-        assert(!Double.isNaN(theta)): "Theta must be a Number";
-        assert(Double.isFinite(theta)): "Theta must be finite";
+            assert (!Double.isNaN(theta)) : "Theta must be a Number";
+            assert (Double.isFinite(theta)) : "Theta must be finite";
 
-        assert(!Double.isNaN(phi)): "Phi must be a Number";
-        assert(Double.isFinite(phi)): "Phi must be finite";
+            assert (!Double.isNaN(phi)) : "Phi must be a Number";
+            assert (Double.isFinite(phi)) : "Phi must be finite";
 
-        /*====================================
-         * check expected boundries
-         *====================================*/
-        assert(radius >= 0): "Radius: " + radius + ".Radius must be greater than 0";
+            /*====================================
+             * check expected boundries
+             *====================================*/
+            assert (radius >= 0) : "Radius: " + radius + ".Radius must be greater than 0";
 
-        assert(theta >= 0): "Theta: " + theta + ".Theta must be greater than 0";
-        assert(theta <= 180): "Theta: " + theta + ".Theta must be less than 180";
+            assert (theta >= 0) : "Theta: " + theta + ".Theta must be greater than 0";
+            assert (theta <= 180) : "Theta: " + theta + ".Theta must be less than 180";
 
-        assert(phi >= 0): "Phi: " + phi + ".Phi must be greater than 0";
-        assert(phi < 360): "Phi: " + phi + ".Phi must be less than 360";
+            assert (phi >= 0) : "Phi: " + phi + ".Phi must be greater than 0";
+            assert (phi < 360) : "Phi: " + phi + ".Phi must be less than 360";
+        }catch (AssertionError e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalStateException(msg);
+        }
     }
 }

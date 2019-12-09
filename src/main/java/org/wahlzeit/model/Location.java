@@ -32,7 +32,10 @@ public class Location {
      * Constructor for Initialization of an Location object
      * @param coordinate: Coordinate according to the Location
      */
-    public Location(CartesianCoordinate coordinate){
+    public Location(AbstractCoordinate coordinate) throws IllegalStateException{
+        if (coordinate == null){
+            throw new IllegalArgumentException("AbstractCoordinate coordinate may not be null");
+        }
         this.coordinate = coordinate;
     }
 

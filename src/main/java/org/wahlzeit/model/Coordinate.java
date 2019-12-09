@@ -25,15 +25,17 @@
 
 package org.wahlzeit.model;
 
+import com.google.apphosting.api.ApiProxy;
+
 public interface Coordinate {
 
-    public CartesianCoordinate asCartesianCoordinate();
+    public CartesianCoordinate asCartesianCoordinate() throws IllegalStateException;
 
-    public SphericCoordinate asSphericCoordinate() throws Exception;
+    public SphericCoordinate asSphericCoordinate() throws IllegalStateException;
 
-    public double getCartesianDistance(Coordinate coordinate);
+    public double getCartesianDistance(Coordinate coordinate) throws IllegalStateException, IllegalArgumentException;
 
-    public double getCentralAngle(Coordinate coordinate) throws Exception;
+    public double getCentralAngle(Coordinate coordinate) throws IllegalStateException, IllegalArgumentException;
 
     public boolean isEqual(Coordinate coordinate);
 

@@ -23,6 +23,8 @@ package org.wahlzeit.model;
  * <http://www.gnu.org/licenses/>.
  */
 
+import java.util.logging.Level;
+
 /**
  * Class representing a Coordinate of a specific Location
  */
@@ -38,19 +40,26 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * @param y:    Y-Coordinate of some Location
      * @param z:    Z-Coordinate of some Location
      */
-    public CartesianCoordinate(double x, double y, double z){
+    public CartesianCoordinate(double x, double y, double z) throws IllegalStateException, IllegalArgumentException{
         assertClassInvariants();
         this.x = x;
         this.y = y;
         this.z = z;
-        assertClassInvariants();
+
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
     }
 
     /**
      * Returns the x-coordinate of this coordinate
      * @return x-coordinate of this Coordinate
      */
-    public double getX(){
+    public double getX() throws IllegalStateException{
         assertClassInvariants();
         return x;
     }
@@ -58,7 +67,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * Returns the z-coordinate of this coordinate
      * @return z-coordinate of this Coordinate
      */
-    public double getZ(){
+    public double getZ() throws IllegalStateException{
         assertClassInvariants();
         return z;
     }
@@ -67,7 +76,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * Returns the y-coordinate of this coordinate
      * @return y-coordinate of this Coordinate
      */
-    public double getY(){
+    public double getY() throws IllegalStateException{
         assertClassInvariants();
         return y;
     }
@@ -76,28 +85,48 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * Sets the class Variable x
      * @param x Member Variable x
      */
-    public void setX(double x) {
+    public void setX(double x) throws IllegalStateException, IllegalArgumentException{
         assertClassInvariants();
         this.x = x;
-        assertClassInvariants();
+
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
     }
     /**
      * Sets the class Variable y
      * @param y Member Variable y
      */
-    public void setY(double y) {
+    public void setY(double y) throws IllegalStateException, IllegalArgumentException{
         assertClassInvariants();
         this.y = y;
-        assertClassInvariants();
+
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
     }
     /**
      * Sets the class Variable z
      * @param z Member Variable z
      */
-    public void setZ(double z) {
+    public void setZ(double z) throws IllegalStateException, IllegalArgumentException{
         assertClassInvariants();
         this.z = z;
-        assertClassInvariants();
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
     }
 
     /**
@@ -105,7 +134,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * @return CartesianCoordinate upon which the method is called
      */
     @Override
-    public CartesianCoordinate asCartesianCoordinate() {
+    public CartesianCoordinate asCartesianCoordinate() throws IllegalStateException{
         assertClassInvariants();
         return this;
     }
@@ -116,7 +145,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * @return this {@link CartesianCoordinate} as a {@link SphericCoordinate}
      */
     @Override
-    public SphericCoordinate asSphericCoordinate() throws Exception {
+    public SphericCoordinate asSphericCoordinate()  throws IllegalStateException{
         // Class Invariant
         assertClassInvariants();
 
@@ -144,18 +173,23 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * @throws Exception
      */
     @Override
-    protected void assertClassInvariants() {
+    protected void assertClassInvariants() throws IllegalStateException{
         /*====================================
          *  check if a Number and Finite
          *===================================*/
-        assert (!Double.isNaN(x)) : "X must be a Number";
-        assert (Double.isFinite(x)) : "X must be finite";
+        try {
+            assert (!Double.isNaN(x)) : "X must be a Number";
+            assert (Double.isFinite(x)) : "X must be finite";
 
-        assert (!Double.isNaN(y)) : "Y must be a Number";
-        assert (Double.isFinite(y)): "Y must be finite";
+            assert (!Double.isNaN(y)) : "Y must be a Number";
+            assert (Double.isFinite(y)) : "Y must be finite";
 
-        assert (!Double.isNaN(z)) : "Z must be a Number";
-        assert (Double.isFinite(z)): "Z must be finite";
-
+            assert (!Double.isNaN(z)) : "Z must be a Number";
+            assert (Double.isFinite(z)) : "Z must be finite";
+        }catch(AssertionError e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalStateException(msg);
+        }
     }
 }

@@ -83,6 +83,9 @@ public class PhotoFactory {
 	 * Creates a new photo with the specified id
 	 */
 	public Photo createPhoto(PhotoId id) {
+		if (id == null){
+			throw new IllegalArgumentException("PhotoId id may not be null");
+		}
 		return new Photo(id);
 	}
 
