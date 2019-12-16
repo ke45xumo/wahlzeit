@@ -26,23 +26,23 @@ public class CoordinateTest {
 
     @Before
     public void setup() throws Exception{
-        correctSphericCoordinate = new SphericCoordinate(correctPhi, correctTheta, correctRadius);
+        correctSphericCoordinate = SphericCoordinate.getInstance(correctPhi, correctTheta, correctRadius);
 
-        correctCartesianCoordinate = new CartesianCoordinate(7,4,3);
-        correctCartesianCoordinate2 = new CartesianCoordinate(17, 6, 2);
+        correctCartesianCoordinate = CartesianCoordinate.getInstance(7,4,3);
+        correctCartesianCoordinate2 = CartesianCoordinate.getInstance(17, 6, 2);
     }
     @Test
     public void testSphericCoordinate()  {
-        assertThrows(IllegalArgumentException.class, () -> new SphericCoordinate(falsePhi1,correctTheta,correctRadius));
-        assertThrows(IllegalArgumentException.class, () -> new SphericCoordinate(falsePhi2,correctTheta,correctRadius));
+        assertThrows(IllegalArgumentException.class, () -> SphericCoordinate.getInstance(falsePhi1,correctTheta,correctRadius));
+        assertThrows(IllegalArgumentException.class, () -> SphericCoordinate.getInstance(falsePhi2,correctTheta,correctRadius));
 
-        assertThrows(IllegalArgumentException.class, () -> new SphericCoordinate(correctPhi,falseTheta1,correctRadius));
-        assertThrows(IllegalArgumentException.class, () -> new SphericCoordinate(correctPhi,falseTheta2,correctRadius));
+        assertThrows(IllegalArgumentException.class, () -> SphericCoordinate.getInstance(correctPhi,falseTheta1,correctRadius));
+        assertThrows(IllegalArgumentException.class, () -> SphericCoordinate.getInstance(correctPhi,falseTheta2,correctRadius));
 
-        assertThrows(IllegalArgumentException.class, () -> new SphericCoordinate(correctPhi,correctTheta,falseRadius));
+        assertThrows(IllegalArgumentException.class, () -> SphericCoordinate.getInstance(correctPhi,correctTheta,falseRadius));
 
         try {
-            assertNotNull(new SphericCoordinate(correctPhi, correctTheta, correctRadius));
+            assertNotNull(SphericCoordinate.getInstance(correctPhi, correctTheta, correctRadius));
         }catch (Exception ex){
             Assert.fail("Silent mode does not allow exceptions");
         }
@@ -113,8 +113,8 @@ public class CoordinateTest {
         double phi2 = 90 - lat2;
 
         try {
-            SphericCoordinate sphericCoordinate1 = new SphericCoordinate(phi1,theta1,6371);
-            SphericCoordinate sphericCoordinate2 = new SphericCoordinate(phi2,theta2, 6371);
+            SphericCoordinate sphericCoordinate1 = SphericCoordinate.getInstance(phi1,theta1,6371);
+            SphericCoordinate sphericCoordinate2 = SphericCoordinate.getInstance(phi2,theta2, 6371);
             assertEquals(expectedAngle,sphericCoordinate1.getCentralAngle(sphericCoordinate2),0.1);
         } catch (Exception e) {
             Assert.fail("Silent mode does not allow exceptions");

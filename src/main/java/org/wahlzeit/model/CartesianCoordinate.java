@@ -23,15 +23,19 @@ package org.wahlzeit.model;
  * <http://www.gnu.org/licenses/>.
  */
 
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.logging.Level;
 
 /**
  * Class representing a Coordinate of a specific Location
  */
 public class CartesianCoordinate extends AbstractCoordinate{
-    private double x;
-    private double y;
-    private double z;
+    private  double x;
+    private  double y;
+    private  double z;
+
+    private final static CopyOnWriteArrayList<CartesianCoordinate> coordinateList = new CopyOnWriteArrayList<>();
 
     /**
      * Constructor for Class Coordinate
@@ -40,7 +44,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * @param y:    Y-Coordinate of some Location
      * @param z:    Z-Coordinate of some Location
      */
-    public CartesianCoordinate(double x, double y, double z) throws IllegalStateException, IllegalArgumentException{
+    private CartesianCoordinate(double x, double y, double z) throws IllegalStateException, IllegalArgumentException{
         assertClassInvariants();
         this.x = x;
         this.y = y;
@@ -55,6 +59,36 @@ public class CartesianCoordinate extends AbstractCoordinate{
         }
     }
 
+
+    /**
+     * Get an Singleton Instance
+     * (--> Making CartesianCoordinate Shared)
+     *
+     * @param x:    X-Coordinate of some Location
+     * @param y:    Y-Coordinate of some Location
+     * @param z:    Z-Coordinate of some Location
+     * @return:     new or existing CartesianCoordinate with Coordinates x, y and z
+     */
+    public static CartesianCoordinate getInstance(double x, double y, double z){
+        CartesianCoordinate newCoordinate = new CartesianCoordinate(x,y,z);
+
+        // Do Double Check Locking needed ( --> CopyOnWriteArrayList is Concurrent)
+        synchronized (coordinateList) {
+            // Uses hashCode() / equals() to identify Object (--> Comparable)
+            int index = coordinateList.indexOf(newCoordinate);
+
+            // Not found in List --> assign to result and add to list
+            if (index == -1) {
+                coordinateList.add(newCoordinate);
+                return newCoordinate;
+
+            // Found in List return Object from list
+            } else {
+                return coordinateList.get(index);
+            }
+        }
+
+    }
     /**
      * Returns the x-coordinate of this coordinate
      * @return x-coordinate of this Coordinate
@@ -81,53 +115,54 @@ public class CartesianCoordinate extends AbstractCoordinate{
         return y;
     }
 
-    /**
-     * Sets the class Variable x
-     * @param x Member Variable x
-     */
-    public void setX(double x) throws IllegalStateException, IllegalArgumentException{
-        assertClassInvariants();
-        this.x = x;
 
-        try {
-            assertClassInvariants();
-        }catch (IllegalStateException e){
-            final String msg = e.getMessage();
-            log.log(Level.SEVERE,msg);
-            throw new IllegalArgumentException(msg);
-        }
-    }
-    /**
-     * Sets the class Variable y
-     * @param y Member Variable y
-     */
-    public void setY(double y) throws IllegalStateException, IllegalArgumentException{
-        assertClassInvariants();
-        this.y = y;
-
-        try {
-            assertClassInvariants();
-        }catch (IllegalStateException e){
-            final String msg = e.getMessage();
-            log.log(Level.SEVERE,msg);
-            throw new IllegalArgumentException(msg);
-        }
-    }
-    /**
-     * Sets the class Variable z
-     * @param z Member Variable z
-     */
-    public void setZ(double z) throws IllegalStateException, IllegalArgumentException{
-        assertClassInvariants();
-        this.z = z;
-        try {
-            assertClassInvariants();
-        }catch (IllegalStateException e){
-            final String msg = e.getMessage();
-            log.log(Level.SEVERE,msg);
-            throw new IllegalArgumentException(msg);
-        }
-    }
+//    /**
+//     * Sets the class Variable x
+//     * @param x Member Variable x
+//     */
+//    private void setX(double x) throws IllegalStateException, IllegalArgumentException{
+//        assertClassInvariants();
+//        this.x = x;
+//
+//        try {
+//            assertClassInvariants();
+//        }catch (IllegalStateException e){
+//            final String msg = e.getMessage();
+//            log.log(Level.SEVERE,msg);
+//            throw new IllegalArgumentException(msg);
+//        }
+//    }
+//    /**
+//     * Sets the class Variable y
+//     * @param y Member Variable y
+//     */
+//    private void setY(double y) throws IllegalStateException, IllegalArgumentException{
+//        assertClassInvariants();
+//        this.y = y;
+//
+//        try {
+//            assertClassInvariants();
+//        }catch (IllegalStateException e){
+//            final String msg = e.getMessage();
+//            log.log(Level.SEVERE,msg);
+//            throw new IllegalArgumentException(msg);
+//        }
+//    }
+//    /**
+//     * Sets the class Variable z
+//     * @param z Member Variable z
+//     */
+//    private void setZ(double z) throws IllegalStateException, IllegalArgumentException{
+//        assertClassInvariants();
+//        this.z = z;
+//        try {
+//            assertClassInvariants();
+//        }catch (IllegalStateException e){
+//            final String msg = e.getMessage();
+//            log.log(Level.SEVERE,msg);
+//            throw new IllegalArgumentException(msg);
+//        }
+//    }
 
     /**
      * Gets this Cartesian Coordinate
@@ -153,7 +188,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
         double phi = Math.atan(y/x);
         double theta =  Math.acos(z/radius);
 
-        SphericCoordinate sphericCoordinate =  new SphericCoordinate(phi, theta, radius);
+        SphericCoordinate sphericCoordinate =  SphericCoordinate.getInstance(phi, theta, radius);
 
         /* No need to check Invariants/ Post Conditions ==> Invariants covered by Constructor */
         assertClassInvariants();
@@ -191,5 +226,53 @@ public class CartesianCoordinate extends AbstractCoordinate{
             log.log(Level.SEVERE,msg);
             throw new IllegalStateException(msg);
         }
+    }
+
+    /**
+     * Comparing two Objects (Types and Contents)
+     *
+     * @param obj:  Object to be compared with this Instance
+     * @return:     True, if the same
+     *              False, else
+     */
+    @Override
+    public boolean equals(Object obj) {
+        assertClassInvariants();
+
+        if ( obj == null || !(obj instanceof CartesianCoordinate) ){
+            return false;
+        }
+        CartesianCoordinate argCoordinate = (CartesianCoordinate) obj;
+
+        if ( !(this.isEqual(argCoordinate)) ){
+            return false;
+        }
+
+        assertClassInvariants();
+        return true;
+    }
+
+    /**
+     * Hashcode of the Object by Building
+     * the Hash over the Coordinates x,y,z
+     *
+     * @return      Hash of the Coordinates x,y,z
+     */
+    @Override
+    public int hashCode() {
+        assertClassInvariants();
+        return Objects.hash(x,y,z);
+    }
+
+    /**
+     * Return this instead of a clone
+     *
+     * @return this CartesianCoordinate
+     * @throws CloneNotSupportedException
+     */
+    @Override
+    protected Object clone(){
+        assertClassInvariants();
+        return this;
     }
 }

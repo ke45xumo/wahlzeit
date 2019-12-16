@@ -204,4 +204,23 @@ public abstract class AbstractCoordinate implements Coordinate {
      * Check class invariants Abstract Coordinate and its subclasses
      */
     protected abstract void assertClassInvariants();
+
+    /**
+     * Overriding equals Method to have semantic meaning
+     * @param obj:  Object to be compared with
+     * @return      True, if equal
+     *              False, else
+     */
+    @Override
+    public abstract boolean equals(Object obj);
+
+    /**
+     * Overriding hashCode to have only Hash over the semantic Contents of the Objects
+     * (no Memory Assignment Location)
+     *
+     * @return Hash over the Member Variables
+     */
+    @Override
+    public abstract int hashCode();
+
 }

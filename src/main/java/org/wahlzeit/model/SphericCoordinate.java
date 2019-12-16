@@ -25,6 +25,8 @@ package org.wahlzeit.model;
 
 import com.google.apphosting.api.ApiProxy;
 
+import java.util.Objects;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
 public class SphericCoordinate extends AbstractCoordinate {
@@ -33,7 +35,11 @@ public class SphericCoordinate extends AbstractCoordinate {
     private double theta;
     private double radius;
 
-    public SphericCoordinate(double phi, double theta, double radius) throws IllegalStateException, IllegalArgumentException {
+    private final static CopyOnWriteArrayList<SphericCoordinate> coordinateList = new CopyOnWriteArrayList<>();
+
+
+
+    private SphericCoordinate(double phi, double theta, double radius) throws IllegalStateException, IllegalArgumentException {
         assertClassInvariants();
         this.phi = phi;
         this.theta = theta;
@@ -49,6 +55,35 @@ public class SphericCoordinate extends AbstractCoordinate {
         }
     }
 
+    /**
+     * Get an Singleton Instance
+     * (--> Making CartesianCoordinate Shared)
+     *
+     * @param phi:          Phi
+     * @param theta:        Theta
+     * @param radius:       Radius
+     * @return:             new or existing SphericCoordinate with phi, theta and radius
+     */
+    public static SphericCoordinate getInstance(double phi, double theta, double radius){
+        SphericCoordinate newCoordinate = new SphericCoordinate(phi, theta, radius);
+
+        // Do Double Check Locking needed ( --> CopyOnWriteArrayList is Concurrent)
+        synchronized (coordinateList) {
+            // Uses equals() to identify Object (--> implements Comparable)
+            int index = coordinateList.indexOf(newCoordinate);
+
+            // Not found in List --> assign to result and add to list
+            if (index == -1) {
+                coordinateList.add(newCoordinate);
+                return newCoordinate;
+
+                // Found in List return Object from list
+            } else {
+                return coordinateList.get(index);
+            }
+        }
+
+    }
     /**
      * Gets Class Member phi
      * @return Class Member phi
@@ -73,56 +108,56 @@ public class SphericCoordinate extends AbstractCoordinate {
         assertClassInvariants();
         return theta;
     }
-    /**
-     * Sets Class Member phi
-     * @param phi Class Member phi
-     * @return
-     */
-    public void setPhi(double phi) throws IllegalStateException, IllegalArgumentException{
-        assertClassInvariants();
-        this.phi = phi;
-
-        try {
-            assertClassInvariants();
-        }catch (IllegalStateException e){
-            final String msg = e.getMessage();
-            log.log(Level.SEVERE,msg);
-            throw new IllegalArgumentException(msg);
-        }
-    }
-    /**
-     * Sets Class Member radius
-     * @param radius Class Member radius
-     * @return
-     */
-    public void setRadius(double radius) throws IllegalStateException{
-        assertClassInvariants();
-        this.radius = radius;
-
-        try {
-            assertClassInvariants();
-        }catch (IllegalStateException e){
-            final String msg = e.getMessage();
-            log.log(Level.SEVERE,msg);
-            throw new IllegalArgumentException(msg);
-        }
-    }
-    /**
-     * Sets Class Member theta
-     * @param theta:    Class Member theta
-     * @return
-     */
-    public void setTheta(double theta) throws IllegalStateException{
-        assertClassInvariants();
-        this.theta = theta;
-        try {
-            assertClassInvariants();
-        }catch (IllegalStateException e){
-            final String msg = e.getMessage();
-            log.log(Level.SEVERE,msg);
-            throw new IllegalArgumentException(msg);
-        }
-    }
+//    /**
+//     * Sets Class Member phi
+//     * @param phi Class Member phi
+//     * @return
+//     */
+//    public void setPhi(double phi) throws IllegalStateException, IllegalArgumentException{
+//        assertClassInvariants();
+//        this.phi = phi;
+//
+//        try {
+//            assertClassInvariants();
+//        }catch (IllegalStateException e){
+//            final String msg = e.getMessage();
+//            log.log(Level.SEVERE,msg);
+//            throw new IllegalArgumentException(msg);
+//        }
+//    }
+//    /**
+//     * Sets Class Member radius
+//     * @param radius Class Member radius
+//     * @return
+//     */
+//    public void setRadius(double radius) throws IllegalStateException{
+//        assertClassInvariants();
+//        this.radius = radius;
+//
+//        try {
+//            assertClassInvariants();
+//        }catch (IllegalStateException e){
+//            final String msg = e.getMessage();
+//            log.log(Level.SEVERE,msg);
+//            throw new IllegalArgumentException(msg);
+//        }
+//    }
+//    /**
+//     * Sets Class Member theta
+//     * @param theta:    Class Member theta
+//     * @return
+//     */
+//    public void setTheta(double theta) throws IllegalStateException{
+//        assertClassInvariants();
+//        this.theta = theta;
+//        try {
+//            assertClassInvariants();
+//        }catch (IllegalStateException e){
+//            final String msg = e.getMessage();
+//            log.log(Level.SEVERE,msg);
+//            throw new IllegalArgumentException(msg);
+//        }
+//    }
 
     /**
      * Converts this {@link SphericCoordinate} to an Cartesian Coordinate.
@@ -140,7 +175,7 @@ public class SphericCoordinate extends AbstractCoordinate {
         double y = radius * Math.sin(theta) * Math.sin(phi);
         double z = radius * Math.cos(theta);
 
-        CartesianCoordinate cartesianCoordinate = new CartesianCoordinate(x,y,z);
+        CartesianCoordinate cartesianCoordinate = CartesianCoordinate.getInstance(x,y,z);
         assertClassInvariants();
         return cartesianCoordinate;
     }
@@ -199,5 +234,47 @@ public class SphericCoordinate extends AbstractCoordinate {
             log.log(Level.SEVERE,msg);
             throw new IllegalStateException(msg);
         }
+    }
+
+    /**
+     * Comparing the the Objects (Types and Contents)
+     *
+     * @param obj:  Object to be compared with this Instance
+     * @return:     True, if the same
+     *              False, else
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if ( obj == null || !(obj instanceof SphericCoordinate) ){
+            return false;
+        }
+        SphericCoordinate argCoordinate = (SphericCoordinate) obj;
+
+        if ( !(this.isEqual(argCoordinate)) ){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Hashcode of the Object by Building
+     * the Hash over the Coordinates x,y,z
+     *
+     * @return      Hash of the Coordinates x,y,z
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(theta,phi,radius);
+    }
+
+    /**
+     * Return this instead of a clone
+     *
+     * @return this {@link SphericCoordinate}
+     * @throws CloneNotSupportedException
+     */
+    @Override
+    protected Object clone() {
+        return this;
     }
 }

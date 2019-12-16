@@ -39,5 +39,10 @@ public interface Coordinate {
 
     public boolean isEqual(Coordinate coordinate);
 
+    public boolean equals (Object obj);
+
+    public int hashCode();
+
+
 
 }
