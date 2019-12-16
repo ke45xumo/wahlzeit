@@ -42,9 +42,9 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     private SphericCoordinate(double phi, double theta, double radius) throws IllegalStateException, IllegalArgumentException {
         assertClassInvariants();
-        this.phi = phi;
-        this.theta = theta;
-        this.radius = radius;
+        setPhi(phi);
+        setTheta(theta);
+        setRadius(radius);
 
         // False Arguments
         try {
@@ -105,56 +105,56 @@ public class SphericCoordinate extends AbstractCoordinate {
         assertClassInvariants();
         return theta;
     }
-//    /**
-//     * Sets Class Member phi
-//     * @param phi Class Member phi
-//     * @return
-//     */
-//    public void setPhi(double phi) throws IllegalStateException, IllegalArgumentException{
-//        assertClassInvariants();
-//        this.phi = phi;
-//
-//        try {
-//            assertClassInvariants();
-//        }catch (IllegalStateException e){
-//            final String msg = e.getMessage();
-//            log.log(Level.SEVERE,msg);
-//            throw new IllegalArgumentException(msg);
-//        }
-//    }
-//    /**
-//     * Sets Class Member radius
-//     * @param radius Class Member radius
-//     * @return
-//     */
-//    public void setRadius(double radius) throws IllegalStateException{
-//        assertClassInvariants();
-//        this.radius = radius;
-//
-//        try {
-//            assertClassInvariants();
-//        }catch (IllegalStateException e){
-//            final String msg = e.getMessage();
-//            log.log(Level.SEVERE,msg);
-//            throw new IllegalArgumentException(msg);
-//        }
-//    }
-//    /**
-//     * Sets Class Member theta
-//     * @param theta:    Class Member theta
-//     * @return
-//     */
-//    public void setTheta(double theta) throws IllegalStateException{
-//        assertClassInvariants();
-//        this.theta = theta;
-//        try {
-//            assertClassInvariants();
-//        }catch (IllegalStateException e){
-//            final String msg = e.getMessage();
-//            log.log(Level.SEVERE,msg);
-//            throw new IllegalArgumentException(msg);
-//        }
-//    }
+    /**
+     * Sets Class Member phi
+     * @param phi Class Member phi
+     * @return
+     */
+    private void setPhi(double phi) throws IllegalStateException, IllegalArgumentException{
+        assertClassInvariants();
+        this.phi = phi;
+
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
+    }
+    /**
+     * Sets Class Member radius
+     * @param radius Class Member radius
+     * @return
+     */
+    private void setRadius(double radius) throws IllegalStateException{
+        assertClassInvariants();
+        this.radius = radius;
+
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
+    }
+    /**
+     * Sets Class Member theta
+     * @param theta:    Class Member theta
+     * @return
+     */
+    private void setTheta(double theta) throws IllegalStateException{
+        assertClassInvariants();
+        this.theta = theta;
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
+    }
 
     /**
      * Converts this {@link SphericCoordinate} to an Cartesian Coordinate.

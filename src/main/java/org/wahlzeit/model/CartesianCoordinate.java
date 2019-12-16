@@ -46,9 +46,9 @@ public class CartesianCoordinate extends AbstractCoordinate{
      */
     private CartesianCoordinate(double x, double y, double z) throws IllegalStateException, IllegalArgumentException{
         assertClassInvariants();
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        setX(x);
+        setY(y);
+        setZ(z);
 
         try {
             assertClassInvariants();
@@ -110,53 +110,53 @@ public class CartesianCoordinate extends AbstractCoordinate{
     }
 
 
-//    /**
-//     * Sets the class Variable x
-//     * @param x Member Variable x
-//     */
-//    private void setX(double x) throws IllegalStateException, IllegalArgumentException{
-//        assertClassInvariants();
-//        this.x = x;
-//
-//        try {
-//            assertClassInvariants();
-//        }catch (IllegalStateException e){
-//            final String msg = e.getMessage();
-//            log.log(Level.SEVERE,msg);
-//            throw new IllegalArgumentException(msg);
-//        }
-//    }
-//    /**
-//     * Sets the class Variable y
-//     * @param y Member Variable y
-//     */
-//    private void setY(double y) throws IllegalStateException, IllegalArgumentException{
-//        assertClassInvariants();
-//        this.y = y;
-//
-//        try {
-//            assertClassInvariants();
-//        }catch (IllegalStateException e){
-//            final String msg = e.getMessage();
-//            log.log(Level.SEVERE,msg);
-//            throw new IllegalArgumentException(msg);
-//        }
-//    }
-//    /**
-//     * Sets the class Variable z
-//     * @param z Member Variable z
-//     */
-//    private void setZ(double z) throws IllegalStateException, IllegalArgumentException{
-//        assertClassInvariants();
-//        this.z = z;
-//        try {
-//            assertClassInvariants();
-//        }catch (IllegalStateException e){
-//            final String msg = e.getMessage();
-//            log.log(Level.SEVERE,msg);
-//            throw new IllegalArgumentException(msg);
-//        }
-//    }
+    /**
+     * Sets the class Variable x
+     * @param x Member Variable x
+     */
+    private void setX(double x) throws IllegalStateException, IllegalArgumentException{
+        assertClassInvariants();
+        this.x = x;
+
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
+    }
+    /**
+     * Sets the class Variable y
+     * @param y Member Variable y
+     */
+    private void setY(double y) throws IllegalStateException, IllegalArgumentException{
+        assertClassInvariants();
+        this.y = y;
+
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
+    }
+    /**
+     * Sets the class Variable z
+     * @param z Member Variable z
+     */
+    private void setZ(double z) throws IllegalStateException, IllegalArgumentException{
+        assertClassInvariants();
+        this.z = z;
+        try {
+            assertClassInvariants();
+        }catch (IllegalStateException e){
+            final String msg = e.getMessage();
+            log.log(Level.SEVERE,msg);
+            throw new IllegalArgumentException(msg);
+        }
+    }
 
     /**
      * Gets this Cartesian Coordinate
