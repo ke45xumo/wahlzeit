@@ -26,6 +26,7 @@ package org.wahlzeit.model;
 import com.google.apphosting.api.ApiProxy;
 
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
@@ -35,7 +36,7 @@ public class SphericCoordinate extends AbstractCoordinate {
     private double theta;
     private double radius;
 
-    private final static CopyOnWriteArrayList<SphericCoordinate> coordinateList = new CopyOnWriteArrayList<>();
+    private final static ConcurrentHashMap<Integer,SphericCoordinate> coordinateHashMap = new ConcurrentHashMap<>();
 
 
 
@@ -66,20 +67,16 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     public static SphericCoordinate getInstance(double phi, double theta, double radius){
         SphericCoordinate newCoordinate = new SphericCoordinate(phi, theta, radius);
+        int coordinateHash = newCoordinate.hashCode();
 
-        // Do Double Check Locking needed ( --> CopyOnWriteArrayList is Concurrent)
-        synchronized (coordinateList) {
-            // Uses equals() to identify Object (--> implements Comparable)
-            int index = coordinateList.indexOf(newCoordinate);
+        synchronized (coordinateHashMap){
+            SphericCoordinate existentCoordinate = coordinateHashMap.putIfAbsent(coordinateHash,newCoordinate);
 
-            // Not found in List --> assign to result and add to list
-            if (index == -1) {
-                coordinateList.add(newCoordinate);
+            // Already in Map
+            if (existentCoordinate != null){
+                return  existentCoordinate;
+            }else{
                 return newCoordinate;
-
-                // Found in List return Object from list
-            } else {
-                return coordinateList.get(index);
             }
         }
 
@@ -274,7 +271,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @throws CloneNotSupportedException
      */
     @Override
-    protected Object clone() {
+    public Object clone() {
         return this;
     }
 }

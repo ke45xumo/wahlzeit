@@ -35,7 +35,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
     private  double y;
     private  double z;
 
-    private final static CopyOnWriteArrayList<CartesianCoordinate> coordinateList = new CopyOnWriteArrayList<>();
+    private final static ConcurrentHashMap<Integer,CartesianCoordinate> coordinateHashMap = new ConcurrentHashMap();
 
     /**
      * Constructor for Class Coordinate
@@ -71,23 +71,17 @@ public class CartesianCoordinate extends AbstractCoordinate{
      */
     public static CartesianCoordinate getInstance(double x, double y, double z){
         CartesianCoordinate newCoordinate = new CartesianCoordinate(x,y,z);
+        int coordinateHash = newCoordinate.hashCode();
 
-        // Do Double Check Locking needed ( --> CopyOnWriteArrayList is Concurrent)
-        synchronized (coordinateList) {
-            // Uses hashCode() / equals() to identify Object (--> Comparable)
-            int index = coordinateList.indexOf(newCoordinate);
+        synchronized (coordinateHashMap) {
+            CartesianCoordinate existentCoordinate = coordinateHashMap.putIfAbsent(coordinateHash, newCoordinate);
 
-            // Not found in List --> assign to result and add to list
-            if (index == -1) {
-                coordinateList.add(newCoordinate);
-                return newCoordinate;
-
-            // Found in List return Object from list
+            if (existentCoordinate != null) {
+                return existentCoordinate;
             } else {
-                return coordinateList.get(index);
+                return newCoordinate;
             }
         }
-
     }
     /**
      * Returns the x-coordinate of this coordinate
@@ -271,7 +265,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
      * @throws CloneNotSupportedException
      */
     @Override
-    protected Object clone(){
+    public Object clone(){
         assertClassInvariants();
         return this;
     }

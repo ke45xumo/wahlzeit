@@ -223,4 +223,10 @@ public abstract class AbstractCoordinate implements Coordinate {
     @Override
     public abstract int hashCode();
 
+    /**
+     * Overriding clone() to make sure to be shared
+     * @return:
+     */
+    @Override
+    public abstract Object clone();
 }
