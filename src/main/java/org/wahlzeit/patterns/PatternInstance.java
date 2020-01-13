@@ -1,8 +1,4 @@
 /*
- * Class:   BeerPhoto
- * Version: 1.0
- * Date:    2019-11-08
- *
  * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
  *
  * This file is part of the Wahlzeit photo rating application.
@@ -22,35 +18,32 @@
  * <http://www.gnu.org/licenses/>.
  */
 
-package org.wahlzeit.model;
+package org.wahlzeit.patterns;
 
-import org.wahlzeit.patterns.DesignPattern;
-import org.wahlzeit.patterns.PatternInstance;
 
-@PatternInstance(
-        patternName = DesignPattern.ABSTRACT_FACTORY,
-        participants = {"Product"}
+import java.lang.annotation.*;
 
-)
-public class BeerPhoto extends Photo {
-    /**
-     * Constructor
-     */
-    public BeerPhoto(){
-        super();
+
+/**
+ * Annotation, identifying a Design Pattern
+ * and its components (participant)
+ */
+@Repeatable(PatternInstance.patternInstanceList.class)
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface PatternInstance {
+    public DesignPattern patternName();
+    public String [] participants();
+
+    /*============================================
+     * For Mutliple Patterns
+     * ***********************
+     * (A Class can be part of multiple Patterns,
+     *  e.g. Singleton and Abstract Factory
+     *============================================*/
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    @interface patternInstanceList{
+        PatternInstance [] value();
     }
-    /**
-     * Constructor
-     */
-    public BeerPhoto(PhotoId id){
-        super(id);
-    }
-    /**
-     * Constructor
-     */
-    public BeerPhoto(PhotoId myId, Location photoLocation){
-        super(myId,photoLocation);
-    }
-
-
 }

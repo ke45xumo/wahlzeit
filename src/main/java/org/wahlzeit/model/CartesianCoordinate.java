@@ -23,6 +23,9 @@ package org.wahlzeit.model;
  * <http://www.gnu.org/licenses/>.
  */
 
+import org.wahlzeit.patterns.DesignPattern;
+import org.wahlzeit.patterns.PatternInstance;
+
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.logging.Level;
@@ -30,6 +33,16 @@ import java.util.logging.Level;
 /**
  * Class representing a Coordinate of a specific Location
  */
+@PatternInstance(
+        patternName = DesignPattern.SINGLETON,
+        participants = {"Singleton"}
+
+)
+@PatternInstance(
+        patternName = DesignPattern.TEMPLATE_METHOD,
+        participants = {"Concrete Instance"}
+
+)
 public class CartesianCoordinate extends AbstractCoordinate{
     private  double x;
     private  double y;

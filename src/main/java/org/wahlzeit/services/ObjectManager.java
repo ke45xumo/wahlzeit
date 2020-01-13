@@ -22,6 +22,8 @@ package org.wahlzeit.services;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import org.wahlzeit.patterns.DesignPattern;
+import org.wahlzeit.patterns.PatternInstance;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,6 +33,12 @@ import java.util.logging.Logger;
  * An ObjectManager creates/reads/updates/deletes Persistent (objects) from Google Datastore.
  * It is an abstract superclass that relies on an inheritance interface and the Persistent interface.
  */
+
+@PatternInstance(
+		patternName = DesignPattern.PROXY,
+		participants = {"Proxy"}
+
+)
 public abstract class ObjectManager {
 
 	/**

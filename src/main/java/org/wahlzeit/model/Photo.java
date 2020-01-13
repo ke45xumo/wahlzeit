@@ -27,6 +27,8 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Parent;
+import org.wahlzeit.patterns.DesignPattern;
+import org.wahlzeit.patterns.PatternInstance;
 import org.wahlzeit.services.DataObject;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.Language;
@@ -37,6 +39,16 @@ import java.util.Map;
 /**
  * A photo represents a user-provided (uploaded) photo.
  */
+@PatternInstance(
+		patternName = DesignPattern.ABSTRACT_FACTORY,
+		participants = {"Product","Abstract Product"}
+
+)
+@PatternInstance(
+		patternName = DesignPattern.PROXY,
+		participants = {"Client"}
+
+)
 @Entity
 public class Photo extends DataObject {
 

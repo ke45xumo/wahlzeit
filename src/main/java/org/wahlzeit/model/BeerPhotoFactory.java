@@ -23,8 +23,21 @@
  */
 package org.wahlzeit.model;
 
-import java.util.logging.Logger;
+import org.wahlzeit.patterns.DesignPattern;
+import org.wahlzeit.patterns.PatternInstance;
 
+import java.util.logging.Logger;
+@PatternInstance(
+        patternName = DesignPattern.SINGLETON,
+        participants = {"Singleton"}
+
+)
+
+@PatternInstance(
+        patternName = DesignPattern.ABSTRACT_FACTORY,
+        participants = {"Concrete Factory"}
+
+)
 public class BeerPhotoFactory extends PhotoFactory {
 
     private static final Logger log = Logger.getLogger(BeerPhotoFactory.class.getName());

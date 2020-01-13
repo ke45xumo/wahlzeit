@@ -20,12 +20,20 @@
 
 package org.wahlzeit.services;
 
+import org.wahlzeit.patterns.DesignPattern;
+import org.wahlzeit.patterns.PatternInstance;
+
 import java.io.File;
 import java.util.logging.Logger;
 
 /**
  * A basic set of system configuration data
  */
+@PatternInstance(
+		patternName = DesignPattern.SINGLETON,
+		participants = {"Singleton"}
+
+)
 public class SysConfig extends AbstractConfig {
 
 	public static String DATA_PATH = "org-wahlzeit-dirkriehle";

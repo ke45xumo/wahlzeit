@@ -25,6 +25,8 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Parent;
+import org.wahlzeit.patterns.DesignPattern;
+import org.wahlzeit.patterns.PatternInstance;
 import org.wahlzeit.services.EmailAddress;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.services.ObjectManager;
@@ -38,6 +40,17 @@ import java.util.List;
  * A Client uses the system. It is an abstract superclass. This package defines guest, user, moderator, and
  * administrator clients.
  */
+
+@PatternInstance(
+		patternName = DesignPattern.TEMPLATE_METHOD,
+		participants = {"Client"}
+
+)
+@PatternInstance(
+		patternName = DesignPattern.PROXY,
+		participants = {"Client"}
+
+)
 @Entity
 public abstract class Client implements Serializable, Persistent {
 

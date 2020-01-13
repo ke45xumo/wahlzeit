@@ -27,6 +27,8 @@ import org.wahlzeit.model.AccessRights;
 import org.wahlzeit.model.EnglishModelConfig;
 import org.wahlzeit.model.GermanModelConfig;
 import org.wahlzeit.model.LanguageConfigs;
+import org.wahlzeit.patterns.DesignPattern;
+import org.wahlzeit.patterns.PatternInstance;
 import org.wahlzeit.services.ConfigDir;
 import org.wahlzeit.services.Language;
 import org.wahlzeit.services.LogBuilder;
@@ -40,6 +42,10 @@ import java.util.logging.Logger;
 /**
  * A Main class that runs a Wahlzeit web server.
  */
+@PatternInstance(
+		patternName = DesignPattern.SINGLETON,
+		participants = {"Singleton"}
+)
 public class ServiceMain extends ModelMain {
 
 	private static final Logger log = Logger.getLogger(ServiceMain.class.getName());

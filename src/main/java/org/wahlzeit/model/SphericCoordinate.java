@@ -24,12 +24,24 @@
 package org.wahlzeit.model;
 
 import com.google.apphosting.api.ApiProxy;
+import org.wahlzeit.patterns.DesignPattern;
+import org.wahlzeit.patterns.PatternInstance;
 
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 
+@PatternInstance(
+        patternName = DesignPattern.SINGLETON,
+        participants = {"Singleton"}
+
+)
+@PatternInstance(
+        patternName = DesignPattern.TEMPLATE_METHOD,
+        participants = {"Concrete Instance"}
+
+)
 public class SphericCoordinate extends AbstractCoordinate {
     // Members
     private double phi;

@@ -20,6 +20,8 @@
 
 package org.wahlzeit.agents;
 
+import org.wahlzeit.patterns.DesignPattern;
+import org.wahlzeit.patterns.PatternInstance;
 import org.wahlzeit.services.LogBuilder;
 
 import java.util.logging.Logger;
@@ -27,6 +29,11 @@ import java.util.logging.Logger;
 /**
  * An Agent executes background tasks.
  */
+@PatternInstance(
+		patternName = DesignPattern.COMMAND,
+		participants = {"Command Object"}
+
+)
 public abstract class Agent {
 
 	private static Logger log = Logger.getLogger(Agent.class.getName());

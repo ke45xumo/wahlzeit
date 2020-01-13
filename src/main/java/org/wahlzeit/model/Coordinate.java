@@ -26,7 +26,14 @@
 package org.wahlzeit.model;
 
 import com.google.apphosting.api.ApiProxy;
+import org.wahlzeit.patterns.DesignPattern;
+import org.wahlzeit.patterns.PatternInstance;
 
+@PatternInstance(
+        patternName = DesignPattern.TEMPLATE_METHOD,
+        participants = {"Abstract Template"}
+
+)
 public interface Coordinate {
 
     public CartesianCoordinate asCartesianCoordinate() throws IllegalStateException;

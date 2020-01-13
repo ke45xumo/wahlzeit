@@ -21,6 +21,8 @@
 package org.wahlzeit.servlets;
 
 import org.wahlzeit.agents.AgentManager;
+import org.wahlzeit.patterns.DesignPattern;
+import org.wahlzeit.patterns.PatternInstance;
 import org.wahlzeit.services.LogBuilder;
 
 import javax.servlet.ServletException;
@@ -33,6 +35,11 @@ import java.util.logging.Logger;
 /**
  * A servlet class for asynchronous ("agent") tasks.
  */
+@PatternInstance(
+		patternName = DesignPattern.COMMAND,
+		participants = {"Invoker"}
+
+)
 public class AgentServlet extends HttpServlet {
 
 	private static Logger log = Logger.getLogger(AgentServlet.class.getName());
