@@ -30,7 +30,12 @@ public class BeerType extends DataObject {
         assertClassInvariants();
         assert(beerType != null);
 
-        beerType.addSubType(this);    // make this parent of beerType
+        // Ensure that the Type is unique along the hirarchy
+        if (isSubtype(beerType)){
+            return;
+        }
+
+        beerType.setSuperType(this);    // make this parent of beerType
         subTypes.add(beerType);                 // add beerType as child to this
 
         assert(subTypes.size() > 0);

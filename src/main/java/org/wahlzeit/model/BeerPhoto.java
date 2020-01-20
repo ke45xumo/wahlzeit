@@ -33,6 +33,10 @@ import org.wahlzeit.patterns.PatternInstance;
 
 )
 public class BeerPhoto extends Photo {
+    private Beer mBeer;
+
+    private static final String BEER = "beer";
+
     /**
      * Constructor
      */
@@ -52,5 +56,15 @@ public class BeerPhoto extends Photo {
         super(myId,photoLocation);
     }
 
+    public BeerPhoto(Beer beer){
 
+    }
+
+    public Beer getBeer() {
+        return mBeer;
+    }
+
+    public void setBeer(Beer beer) {
+        mBeer = beer;
+    }
 }
