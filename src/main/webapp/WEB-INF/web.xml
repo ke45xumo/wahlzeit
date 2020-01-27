@@ -6,7 +6,7 @@
 
 	<!--> Main listener Application </!-->
 	<listener>
-		<listener-class>org.wahlzeit.apps.Wahlzeit</listener-class>
+		<listener-class>org.wahlzeit.apps.BeerLove</listener-class>
 	</listener>
 	<!--> Main listener Application end </!-->
 

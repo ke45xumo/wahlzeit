@@ -24,6 +24,7 @@
 package org.wahlzeit.model;
 
 
+import com.google.appengine.api.images.Image;
 import org.wahlzeit.services.Persistent;
 
 import java.io.IOException;
@@ -111,5 +112,10 @@ public class BeerPhotoManager extends PhotoManager {
      */
     public void addPhoto(BeerPhoto photo) throws IOException {
         super.addPhoto(photo);
+    }
+
+    @Override
+    public BeerPhoto createPhoto(String filename, Image uploadedImage) throws Exception {
+        return (BeerPhoto)super.createPhoto(filename, uploadedImage);
     }
 }

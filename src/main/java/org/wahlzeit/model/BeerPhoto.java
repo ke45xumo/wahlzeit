@@ -57,7 +57,7 @@ public class BeerPhoto extends Photo {
     }
 
     public BeerPhoto(Beer beer){
-
+        mBeer = beer;
     }
 
     public Beer getBeer() {
